@@ -7,8 +7,8 @@ module TwitterFeelings
 
 	class TwitterSearch
 
-		def search_by_keyword(keyword)
-			Yajl::HttpStream.get("http://search.twitter.com/search.json?q=#{keyword}&rpp=30&locale=es&result_type=recent")					
+		def search(query)
+			Yajl::HttpStream.get("http://search.twitter.com/search.json?q=#{URI.encode(query)}&rpp=30&locale=es&result_type=recent")					
 		end
 
 	end

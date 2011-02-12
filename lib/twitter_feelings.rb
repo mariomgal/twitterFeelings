@@ -2,6 +2,7 @@
 
 require 'twitter_feelings/twitter_search'
 require 'twitter_feelings/stats_calculator'
+require 'yajl'
 
 module TwitterFeelings
 	class TwitterFeelingsCalculator
@@ -19,13 +20,28 @@ module TwitterFeelings
 			}			
 		end
 		
+		def calculate_percentages
+			calculate_rates
+			total = 0
+			@feeling_rates.each { |key, value| 
+				total +=  value
+			}
+			feeling_percentages = Hash.new
+			@feeling_rates.each { |key, value| 
+				feeling_percentages[key] = value*100.0/total
+			}
+			feeling_percentages			 		
+		end
+		
+		def json_percentages
+			puts Yajl::Encoder.encode(calculate_percentages)
+		end
+		
 		def calculate_rates
 			@feeling_rates = Hash.new
-			@feeling_queries.each { |key, value| 
-				puts key
-				puts @stats_calculator.calculate_tweets_per_minute(@twitter_search.search_by_keyword(value))
-				puts
-			}	
+			@feeling_queries.each { |key, query| 				
+				@feeling_rates[key] = @stats_calculator.calculate_tweets_per_minute(@twitter_search.search(query))				
+			}				
 		end
 	
 	end

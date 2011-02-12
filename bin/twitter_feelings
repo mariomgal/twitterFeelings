@@ -3,5 +3,5 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'twitter_feelings'
 
 twitter_feelings_calculator = TwitterFeelings::TwitterFeelingsCalculator.new
-twitter_feelings_calculator.calculate_rates
+twitter_feelings_calculator.json_percentages
 
